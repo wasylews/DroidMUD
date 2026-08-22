@@ -1,0 +1,26 @@
+complexity:
+    LongParameterList:
+        allowedFunctionParameters: 8
+        allowedConstructorParameters: 8
+
+    TooManyFunctions:
+        allowedFunctionsPerFile: 20
+        allowedFunctionsPerClass: 20
+        allowedFunctionsPerInterface: 20
+        allowedFunctionsPerObject: 20
+        allowedFunctionsPerEnum: 20
+
+style:
+    MagicNumber:
+        active: false
+
+    ReturnCount:
+        max: 3
+
+    MaxLineLength:
+        active: false
+
+naming:
+    FunctionNaming:
+        # Allow PascalCase so @Composable functions are named idiomatically.
+        functionPattern: '[a-zA-Z][a-zA-Z0-9]*'
