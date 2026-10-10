@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.wasylews.droidmud.server
 
 import kotlinx.coroutines.CoroutineScope
@@ -29,7 +28,6 @@ import java.net.SocketException
  * A fake MUD server used for local E2E tests.
  */
 class MudServer : Closeable {
-
     private val scope = CoroutineScope(Dispatchers.IO)
 
     private val serverSocket = ServerSocket(0)
@@ -40,18 +38,18 @@ class MudServer : Closeable {
      */
     val port: Int get() = serverSocket.localPort
 
-
     init {
         scope.launch { listen() }
     }
 
     private fun listen() {
-        clientSocket = try {
-            serverSocket.accept()
-        } catch (_: SocketException) {
-            // Server is shutting down
-            return
-        }
+        clientSocket =
+            try {
+                serverSocket.accept()
+            } catch (_: SocketException) {
+                // Server is shutting down
+                return
+            }
 
         val out = clientSocket?.getOutputStream()
         out?.write("Welcome to MUD server!\r\n".toByteArray(Charsets.ISO_8859_1))

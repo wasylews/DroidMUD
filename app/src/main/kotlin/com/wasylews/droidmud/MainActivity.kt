@@ -25,8 +25,14 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.produceState
 import androidx.compose.ui.Modifier
+import androidx.lifecycle.compose.rememberLifecycleOwner
 import com.wasylews.droidmud.ui.theme.DroidMUDTheme
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
+import java.net.Socket
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -46,7 +52,20 @@ fun DroidMUDApp(servers: List<Server>) {
     DroidMUDTheme {
         Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
             Box(modifier = Modifier.fillMaxSize().padding(innerPadding)) {
-                Text("DroidMUD")
+                val server = servers.first()
+                val output by produceState("", server) {
+                    value =
+                        withContext(Dispatchers.IO) {
+                            Socket(server.host, server.port).use {
+                                it
+                                    .getInputStream()
+                                    .bufferedReader(Charsets.ISO_8859_1)
+                                    .readLine()
+                                    .orEmpty()
+                            }
+                        }
+                }
+                Text(output)
             }
         }
     }
@@ -58,5 +77,5 @@ fun DroidMUDApp(servers: List<Server>) {
 data class Server(
     val name: String,
     val host: String,
-    val port: Int
+    val port: Int,
 )
