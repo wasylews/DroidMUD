@@ -24,6 +24,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.wasylews.droidmud.ui.theme.DroidMUDTheme
 
@@ -32,13 +33,30 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            DroidMUDTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Box(modifier = Modifier.fillMaxSize().padding(innerPadding)) {
-                        Text("DroidMUD")
-                    }
-                }
+            DroidMUDApp(emptyList())
+        }
+    }
+}
+
+/**
+ * Main composable for the application.
+ */
+@Composable
+fun DroidMUDApp(servers: List<Server>) {
+    DroidMUDTheme {
+        Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
+            Box(modifier = Modifier.fillMaxSize().padding(innerPadding)) {
+                Text("DroidMUD")
             }
         }
     }
 }
+
+/**
+ * MUD server configuration.
+ */
+data class Server(
+    val name: String,
+    val host: String,
+    val port: Int
+)
